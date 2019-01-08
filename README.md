@@ -1,6 +1,8 @@
 # user-yum.sh
 
-A yum &amp; rpm package installer operating at user-privilege.
+A yum &amp; rpm package installer for CentOS, RedHat RHE, Fedora and the likes, operating at user-privilege.
+
+If you want to know how it works, have a look at [How to install packages in Linux (CentOS) without root user with automatic dependency handling?](https://stackoverflow.com/a/52567731/2514354). If you just want to install a few packages, you may want to use the above answer rather than **user-yum.sh**.
 
 ## Usage
 
@@ -39,7 +41,7 @@ L="/lib:/lib64:/usr/lib:/usr/lib64"
 export LD_LIBRARY_PATH="$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64"
 ```
 
-Tips: You can source it using process substitution if you like:
+Tip: You can source it using process substitution if you like:
 
 ```sh
 source <(cd user-yum.sh/ && make environment)
@@ -51,6 +53,25 @@ There is currently no way to remove a package from the directory after running
 `make install` so be careful: use backup or use several instances. If you've
 just happend to mistype `make +the_wrong_name` you can use `make unload` to
 clean the cache (/rpm) and the list of downloaded packages (/dwnldlist).
+
+## Helper script
+
+If you don't want to `cd` into `user-yum.sh` to install packages, you can use the
+wrapper helper script `em.sh` (usEr-yuM), which will cd into the right directory
+before making your command. If you use it, the priviously mentionned commands become:
+
+```sh
+em.sh +screen
+em.sh +zsh +tcl
+```
+
+```sh
+em.sh install
+```
+
+```sh
+source <(user-yum.sh/em.sh environment)
+```
 
 ## Configuration
 
@@ -77,3 +98,8 @@ to
 ```sh
 INSTALL_FLAG_PREFIX :=
 ```
+
+### TODO
+
+* Simplify the implementation of the install process. There's no reason to keep
+any .cpio file since we can just pipe them (`rpm2cpio x.rpm | cpio -id`).
