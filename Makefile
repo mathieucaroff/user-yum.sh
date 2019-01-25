@@ -41,8 +41,8 @@ INSTALL_FLAG_PREFIX := +
 # ROOT_D, Root of the system
 ROOT_D := $(shell echo $$HOME)/y
 
-# One of `x86_64` or `i686`
-ARCH := x86_64
+# One of ``, `.x86_64` or `.i686`
+ARCH := 
 
 # \/ Configuration end
 
@@ -158,7 +158,7 @@ $(INSTALL_FLAG_PREFIX)%:
 	@$(REINVOK) "$(DWNL_D)"/"$*" 2>&1 | $(SED_LOOP)
 
 $(DWNL_D)/%: | $(DWNL_D) $(RPM_D)
-	@yumdownloader --destdir="$(RPM_D)" --resolve "$*"'.$(ARCH)' 2>&1 \
+	@yumdownloader --destdir="$(RPM_D)" --resolve "$*"'$(ARCH)' 2>&1 \
 	| grep -v '^Failed to set locale,\|^Loaded plugins\|^Loading mirror\| * \(base:\|extras\|updates\)\|^Nothing to download\|^--> ' \
 	| tee >(export output; read -r -s -d'' output); \
 	echo "$$output" | grep '^--->Package ' >/dev/null && touch "$@" || true
