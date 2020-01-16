@@ -1,5 +1,3 @@
-> Repository moved to https://gitlab.com/caroff/user-yum.sh/
-
 # user-yum.sh
 
 A yum &amp; rpm package installer for CentOS, RedHat RHE, Fedora and the likes, operating at user-privilege.
